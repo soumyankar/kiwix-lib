@@ -251,7 +251,7 @@ TEST_F(LibraryTest, filterCheck)
   bookIds = lib.filter(kiwix::Filter().query("folklore"));
   EXPECT_EQ(bookIds.size(), 1U);
 
-  bookIds = lib.filter(kiwix::Filter().query("Wiki"));
+  bookIds = lib.filter(kiwix::Filter().query("Wiki*"));
   EXPECT_EQ(bookIds.size(), 4U);
 
   bookIds = lib.filter(kiwix::Filter().query("Wiki").creator("Wiki"));
