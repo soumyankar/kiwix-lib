@@ -228,7 +228,7 @@ std::string Book::getCategory() const
   }
   catch ( const std::out_of_range& )
   {
-    return "unknown";
+    return "";
   }
 }
 
