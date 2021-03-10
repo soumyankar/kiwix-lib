@@ -688,7 +688,6 @@ InternalServer::search_catalog(const RequestContext& request,
     string query("<Empty query>");
     size_t count(10);
     size_t startIndex(0);
-    std::vector<std::string> tags;
     try {
       query = request.get_argument("q");
       filter.query(query);
@@ -700,6 +699,9 @@ InternalServer::search_catalog(const RequestContext& request,
       filter.name(request.get_argument("name"));
     } catch (const std::out_of_range&) {}
     try {
+      filter.category(request.get_argument("category"));
+    } catch (const std::out_of_range&) {}
+    try {
       filter.lang(request.get_argument("lang"));
     } catch (const std::out_of_range&) {}
     try {
@@ -709,15 +711,11 @@ InternalServer::search_catalog(const RequestContext& request,
       startIndex = extractFromString<unsigned long>(request.get_argument("start"));
     } catch (...) {}
     try {
-      tags = kiwix::split(request.get_argument("tag"), ";");
-    } catch (...) {}
-    try {
-      tags.push_back("_category:" + request.get_argument("category"));
+      filter.acceptTags(kiwix::split(request.get_argument("tag"), ";"));
     } catch (...) {}
     try {
       filter.rejectTags(kiwix::split(request.get_argument("notag"), ";"));
     } catch (...) {}
-    filter.acceptTags(tags);
     opdsDumper.setTitle("Search result for " + query);
     std::vector<std::string> bookIdsToDump = mp_library->filter(filter);
     auto totalResults = bookIdsToDump.size();
